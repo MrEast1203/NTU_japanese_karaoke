@@ -20,6 +20,7 @@ import Tab from "@mui/material/Tab";
 import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
+import AddModal from "../components/AddModal";
 const Wrapper = styled.section`
   display: flex;
   flex-direction: column;
@@ -123,6 +124,12 @@ const Body = () => {
   };
   ////////////////////////////////////////////////
 
+  //For Model
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+  ////////////////////////////////////////////////
+
   return (
     <Wrapper>
       <Box sx={{ width: "100%", typography: "body1" }}>
@@ -145,9 +152,11 @@ const Body = () => {
                     size="large"
                     edge="start"
                     color="inherit"
-                    aria-label="menu">
+                    aria-label="menu"
+                    onClick={handleOpen}>
                     <AddIcon />
                   </IconButton>
+                  <AddModal open={open} onClose={handleClose} />
                 </Toolbar>
               </AppBar>
             </Box>
