@@ -22,14 +22,14 @@ const style = {
   p: 4,
 };
 
-const AddModal = ({ open, onClose }) => {
-  const [name, setName] = useState("");
-  const [require, setRequire] = useState("許願");
-  const [song, setSong] = useState("");
-  const [singer, setSinger] = useState("");
-  const [detail, setDetail] = useState("");
-  const [link, setLink] = useState("");
-  const [addition, setAddition] = useState("");
+const EditModal = ({ open, onClose, type, data }) => {
+  const [name, setName] = useState(data.name);
+  const [require, setRequire] = useState(data.require);
+  const [song, setSong] = useState(data.song);
+  const [singer, setSinger] = useState(data.singer);
+  const [detail, setDetail] = useState(data.detail);
+  const [link, setLink] = useState(data.link);
+  const [addition, setAddition] = useState(data.addition);
   // const [replyType, setReplyType] = useState(false)
   // const [reply, setReply] = useState('')
   const [nameEmpty, setNameEmpty] = useState(false);
@@ -82,13 +82,13 @@ const AddModal = ({ open, onClose }) => {
     onClose();
   };
   const handleClose = () => {
-    setName("");
-    setRequire("許願");
-    setSong("");
-    setSinger("");
-    setDetail("");
-    setLink("");
-    setAddition("");
+    // setName(data.name);
+    // setRequire(data.require);
+    // setSong(data.song);
+    // setSinger(data.singer);
+    // setDetail(data.detail);
+    // setLink(data.link);
+    // setAddition(data.addition);
     setNameEmpty(false);
     setSongEmpty(false);
     onClose();
@@ -107,6 +107,7 @@ const AddModal = ({ open, onClose }) => {
           required
           fullWidth
           error={nameEmpty}
+          defaultValue={name}
           id="standard-required"
           label="Name"
           variant="standard"
@@ -119,7 +120,7 @@ const AddModal = ({ open, onClose }) => {
             Require
           </InputLabel>
           <NativeSelect
-            defaultValue={"許願"}
+            defaultValue={require}
             inputProps={{
               name: "require",
               id: "uncontrolled-native",
@@ -150,6 +151,7 @@ const AddModal = ({ open, onClose }) => {
             <TextField
               required
               fullWidth
+              defaultValue={song}
               error={songEmpty}
               id="standard-required"
               label="Song"
@@ -163,6 +165,7 @@ const AddModal = ({ open, onClose }) => {
             </Typography>
             <TextField
               fullWidth
+              defaultValue={singer}
               id="standard"
               label="Singer"
               variant="standard"
@@ -176,6 +179,7 @@ const AddModal = ({ open, onClose }) => {
         </Typography>
         <TextField
           fullWidth
+          defaultValue={detail}
           id="standard"
           label="Detail"
           variant="standard"
@@ -188,6 +192,7 @@ const AddModal = ({ open, onClose }) => {
         </Typography>
         <TextField
           fullWidth
+          defaultValue={link}
           id="standard"
           label="Link"
           variant="standard"
@@ -200,6 +205,7 @@ const AddModal = ({ open, onClose }) => {
         </Typography>
         <TextField
           fullWidth
+          defaultValue={addition}
           id="standard"
           label="Addition"
           variant="standard"
@@ -216,7 +222,7 @@ const AddModal = ({ open, onClose }) => {
             Cancel
           </Button>
           <Button variant="contained" color="success" onClick={handleAdd}>
-            Add
+            {type}
           </Button>
         </Stack>
       </Box>
@@ -224,4 +230,4 @@ const AddModal = ({ open, onClose }) => {
   );
 };
 
-export default AddModal;
+export default EditModal;

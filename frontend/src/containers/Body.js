@@ -21,6 +21,10 @@ import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
 import AddModal from "../components/AddModal";
+
+import { useList } from "../hooks/useList";
+import EditModal from "../components/EditModal";
+
 const Wrapper = styled.section`
   display: flex;
   flex-direction: column;
@@ -30,51 +34,36 @@ function createData(
   name,
   require,
   song,
+  singer,
   detail,
   link,
   addition,
   replyType,
   reply
 ) {
-  return { name, require, song, detail, link, addition, replyType, reply };
+  return {
+    name,
+    require,
+    song,
+    singer,
+    detail,
+    link,
+    addition,
+    replyType,
+    reply,
+  };
 }
-const rows = [
-  createData(
-    "kirito2301",
-    "許願",
-    "V.W.P - 再会",
-    "感覺應該要一段時間後才會上QQ",
-    "",
-    "",
-    false,
-    "正在弄"
-  ),
-  createData(
-    "布衣",
-    "許願",
-    "豚乙女-ソリッド",
-    "",
-    "https://youtu.be/_AdKinx-iTw",
-    "",
-    false,
-    "正在弄"
-  ),
-  createData(
-    "布衣",
-    "許願",
-    "水樹奈奈-Synchrogazer",
-    "希望有戰姬絕唱動畫MV",
-    "https://youtu.be/2DKCoLZAGvQ",
-    "",
-    true,
-    "Done"
-  ),
-];
+// const rows = [
+//   createData("kirito2301","許願","V.W.P - 再会","感覺應該要一段時間後才會上QQ","","",false,"正在弄"),
+//   createData("布衣","許願","豚乙女-ソリッド","","https://youtu.be/_AdKinx-iTw","",false,"正在弄"),
+//   createData("布衣","許願","水樹奈奈-Synchrogazer","希望有戰姬絕唱動畫MV","https://youtu.be/2DKCoLZAGvQ","",true,"Done"),
+// ];
 const rows2 = [
   createData(
     "rina",
     "投稿",
-    "fourfolium 涼風青葉(CV:高田憂希)、滝本ひふみ(CV:山口愛)、篠田はじめ(CV:戸田めぐみ)、飯島ゆん(CV:竹尾歩美)-Now Loading!!!!",
+    "fourfolium",
+    "涼風青葉(CV:高田憂希)、滝本ひふみ(CV:山口愛)、篠田はじめ(CV:戸田めぐみ)、飯島ゆん(CV:竹尾歩美)-Now Loading!!!!",
     "",
     "https://www.bilibili.com/video/BV1Bs411r73d/",
     "",
@@ -84,7 +73,8 @@ const rows2 = [
   createData(
     "洪曄",
     "許願",
-    "如月千早（cv:今井麻美）—約束",
+    "如月千早",
+    "（cv:今井麻美）—約束",
     "",
     "https://youtu.be/4-MZ6vUQD-I",
     "",
@@ -100,6 +90,7 @@ const rows3 = [
     "",
     "",
     "",
+    "",
     false,
     "半完成狀態"
   ),
@@ -107,6 +98,7 @@ const rows3 = [
     "蔡承翰",
     "許願",
     "Egoist-LoveStruck",
+    "",
     "到處都唱不到QQ",
     "",
     "",
@@ -128,7 +120,15 @@ const Body = () => {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+
+  const [afterData, setAfterData] = React.useState({});
+  const handleOpenAfterTable = (data) => {
+    setAfterData(data);
+    setOpen(true);
+  };
   ////////////////////////////////////////////////
+
+  const { table, afterTable, uploadTable } = useList();
 
   return (
     <Wrapper>
@@ -176,15 +176,15 @@ const Body = () => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {rows.map((row) => (
+                  {table.map((row, index) => (
                     <TableRow
-                      key={row.name}
+                      key={index}
                       sx={{
                         "&:last-child td, &:last-child th": { border: 0 },
                       }}>
                       <TableCell>{row.name}</TableCell>
                       <TableCell>{row.require}</TableCell>
-                      <TableCell>{row.song}</TableCell>
+                      <TableCell>{row.song + " " + row.singer}</TableCell>
                       <TableCell>{row.detail}</TableCell>
                       <TableCell>{row.link}</TableCell>
                       <TableCell>{row.addition}</TableCell>
@@ -210,13 +210,13 @@ const Body = () => {
                   <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                     Waiting List
                   </Typography>
-                  <IconButton
+                  {/* <IconButton
                     size="large"
                     edge="start"
                     color="inherit"
                     aria-label="menu">
                     <AddIcon />
-                  </IconButton>
+                  </IconButton> */}
                 </Toolbar>
               </AppBar>
             </Box>
@@ -236,15 +236,15 @@ const Body = () => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {rows2.map((row) => (
+                  {rows2.map((row, index) => (
                     <TableRow
-                      key={row.name}
+                      key={index}
                       sx={{
                         "&:last-child td, &:last-child th": { border: 0 },
                       }}>
                       <TableCell>{row.name}</TableCell>
                       <TableCell>{row.require}</TableCell>
-                      <TableCell>{row.song}</TableCell>
+                      <TableCell>{row.song + " " + row.singer}</TableCell>
                       <TableCell>{row.detail}</TableCell>
                       <TableCell>{row.link}</TableCell>
                       <TableCell>{row.addition}</TableCell>
@@ -253,9 +253,18 @@ const Body = () => {
                         {row.replyType ? <DoneIcon /> : <PendingActionsIcon />}
                       </TableCell>
                       <TableCell>
-                        <IconButton aria-label="expand row" size="small">
+                        <IconButton
+                          aria-label="expand row"
+                          size="small"
+                          onClick={() => handleOpenAfterTable(row)}>
                           <EditIcon />
                         </IconButton>
+                        <EditModal
+                          open={open}
+                          onClose={handleClose}
+                          type={"afterTable"}
+                          data={afterData}
+                        />
                       </TableCell>
                     </TableRow>
                   ))}
@@ -270,13 +279,13 @@ const Body = () => {
                   <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                     Waiting List
                   </Typography>
-                  <IconButton
+                  {/* <IconButton
                     size="large"
                     edge="start"
                     color="inherit"
                     aria-label="menu">
                     <AddIcon />
-                  </IconButton>
+                  </IconButton> */}
                 </Toolbar>
               </AppBar>
             </Box>
@@ -296,15 +305,15 @@ const Body = () => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {rows3.map((row) => (
+                  {rows3.map((row, index) => (
                     <TableRow
-                      key={row.name}
+                      key={index}
                       sx={{
                         "&:last-child td, &:last-child th": { border: 0 },
                       }}>
                       <TableCell>{row.name}</TableCell>
                       <TableCell>{row.require}</TableCell>
-                      <TableCell>{row.song}</TableCell>
+                      <TableCell>{row.song + " " + row.singer}</TableCell>
                       <TableCell>{row.detail}</TableCell>
                       <TableCell>{row.link}</TableCell>
                       <TableCell>{row.addition}</TableCell>
