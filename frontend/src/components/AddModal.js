@@ -70,7 +70,8 @@ const AddModal = ({ open, onClose }) => {
     const tmp = createData(
       name,
       require,
-      song + " " + singer,
+      song,
+      singer,
       detail,
       link,
       addition,

@@ -22,19 +22,31 @@ const style = {
   p: 4,
 };
 
-const EditModal = ({ open, onClose, type, data }) => {
-  const [name, setName] = useState(data.name);
-  const [require, setRequire] = useState(data.require);
-  const [song, setSong] = useState(data.song);
-  const [singer, setSinger] = useState(data.singer);
-  const [detail, setDetail] = useState(data.detail);
-  const [link, setLink] = useState(data.link);
-  const [addition, setAddition] = useState(data.addition);
-  // const [replyType, setReplyType] = useState(false)
-  // const [reply, setReply] = useState('')
+const EditModal = ({ open, onClose, type, data, index }) => {
+  const [name, setName] = useState(data.name === undefined ? "" : data.name);
+  const [require, setRequire] = useState(
+    data.require === undefined ? "" : data.require
+  );
+  const [song, setSong] = useState(data.song === undefined ? "" : data.song);
+  const [singer, setSinger] = useState(
+    data.singer === undefined ? "" : data.singer
+  );
+  const [detail, setDetail] = useState(
+    data.detail === undefined ? "" : data.detail
+  );
+  const [link, setLink] = useState(data.link === undefined ? "" : data.link);
+  const [addition, setAddition] = useState(
+    data.addition === undefined ? "" : data.addition
+  );
+  const [replyType, setReplyType] = useState(
+    data.replyType === undefined ? false : data.replyType
+  );
+  const [reply, setReply] = useState(
+    data.reply === undefined ? "" : data.reply
+  );
   const [nameEmpty, setNameEmpty] = useState(false);
   const [songEmpty, setSongEmpty] = useState(false);
-  const { addToTable, createData } = useList();
+  const { moveData, createData } = useList();
 
   const handleNameChange = (e) => {
     setName(e.target.value);
@@ -57,8 +69,14 @@ const EditModal = ({ open, onClose, type, data }) => {
   const handleAdditionChange = (e) => {
     setAddition(e.target.value);
   };
+  const handleReplyType = (e) => {
+    setReplyType(e.target.value);
+  };
+  const handleReply = (e) => {
+    setReply(e.target.value);
+  };
 
-  const handleAdd = () => {
+  const handleAdd = (id, from, to) => {
     if (name === "" || song === "") {
       name === "" ? setNameEmpty(true) : setNameEmpty(false);
       song === "" ? setSongEmpty(true) : setSongEmpty(false);
@@ -70,25 +88,19 @@ const EditModal = ({ open, onClose, type, data }) => {
     const tmp = createData(
       name,
       require,
-      song + " " + singer,
+      song,
+      singer,
       detail,
       link,
       addition,
-      false,
-      ""
+      replyType,
+      reply
     );
     // console.log("object", tmp);
-    addToTable(tmp);
+    moveData(id, from, to, tmp);
     onClose();
   };
   const handleClose = () => {
-    // setName(data.name);
-    // setRequire(data.require);
-    // setSong(data.song);
-    // setSinger(data.singer);
-    // setDetail(data.detail);
-    // setLink(data.link);
-    // setAddition(data.addition);
     setNameEmpty(false);
     setSongEmpty(false);
     onClose();
@@ -213,6 +225,35 @@ const EditModal = ({ open, onClose, type, data }) => {
           onChange={handleAdditionChange}
         />
 
+        <FormControl sx={{ mb: 2 }}>
+          <InputLabel variant="standard" htmlFor="uncontrolled-native">
+            Reply Type
+          </InputLabel>
+          <NativeSelect
+            defaultValue={replyType}
+            inputProps={{
+              name: "require",
+              id: "uncontrolled-native",
+            }}
+            onChange={handleReplyType}>
+            <option value={false}>進行中</option>
+            <option value={true}>已完成</option>
+          </NativeSelect>
+        </FormControl>
+
+        <Typography id="modal-modal-title" variant="h6" component="h2">
+          回覆detail
+        </Typography>
+        <TextField
+          fullWidth
+          defaultValue={reply}
+          id="standard"
+          label="Reply"
+          variant="standard"
+          sx={{ mb: 2 }}
+          onChange={handleReply}
+        />
+
         <Stack
           direction="row"
           spacing={0}
@@ -221,8 +262,23 @@ const EditModal = ({ open, onClose, type, data }) => {
           <Button variant="contained" color="error" onClick={handleClose}>
             Cancel
           </Button>
-          <Button variant="contained" color="success" onClick={handleAdd}>
-            {type}
+          <Button
+            variant="contained"
+            color="success"
+            onClick={() => handleAdd(index, type, "table")}>
+            到工作進度
+          </Button>
+          <Button
+            variant="contained"
+            color="info"
+            onClick={() => handleAdd(index, type, "afterTable")}>
+            到之後處理
+          </Button>
+          <Button
+            variant="contained"
+            color="success"
+            onClick={() => handleAdd(index, type, "uploadTable")}>
+            到未上傳區
           </Button>
         </Stack>
       </Box>
