@@ -21,6 +21,7 @@ import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
 import AddModal from "../components/AddModal";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 import { useList } from "../hooks/useList";
 import EditModal from "../components/EditModal";
@@ -207,19 +208,24 @@ const Body = () => {
                         {row.replyType ? <DoneIcon /> : <PendingActionsIcon />}
                       </TableCell>
                       <TableCell>
-                        <IconButton
-                          aria-label="expand row"
-                          size="small"
-                          onClick={() => handleOpenAfterData(row, index)}>
-                          <EditIcon />
-                        </IconButton>
-                        <Edit
-                          open={open}
-                          handleClose={handleClose}
-                          type={"table"}
-                          afterData={afterData}
-                          index={id}
-                        />
+                        <div style={{ display: "flex" }}>
+                          <IconButton
+                            aria-label="expand row"
+                            size="small"
+                            onClick={() => handleOpenAfterData(row, index)}>
+                            <EditIcon />
+                          </IconButton>
+                          <IconButton aria-label="expand row" size="small">
+                            <DeleteIcon />
+                          </IconButton>
+                          <Edit
+                            open={open}
+                            handleClose={handleClose}
+                            type={"table"}
+                            afterData={afterData}
+                            index={id}
+                          />
+                        </div>
                       </TableCell>
                     </TableRow>
                   ))}
@@ -277,19 +283,24 @@ const Body = () => {
                         {row.replyType ? <DoneIcon /> : <PendingActionsIcon />}
                       </TableCell>
                       <TableCell>
-                        <IconButton
-                          aria-label="expand row"
-                          size="small"
-                          onClick={() => handleOpenAfterData(row, index)}>
-                          <EditIcon />
-                        </IconButton>
-                        <Edit
-                          open={open}
-                          handleClose={handleClose}
-                          type={"afterTable"}
-                          afterData={afterData}
-                          index={id}
-                        />
+                        <div style={{ display: "flex" }}>
+                          <IconButton
+                            aria-label="expand row"
+                            size="small"
+                            onClick={() => handleOpenAfterData(row, index)}>
+                            <EditIcon />
+                          </IconButton>
+                          <IconButton aria-label="expand row" size="small">
+                            <DeleteIcon />
+                          </IconButton>
+                          <Edit
+                            open={open}
+                            handleClose={handleClose}
+                            type={"afterTable"}
+                            afterData={afterData}
+                            index={id}
+                          />
+                        </div>
                       </TableCell>
                     </TableRow>
                   ))}
@@ -347,19 +358,24 @@ const Body = () => {
                         {row.replyType ? <DoneIcon /> : <PendingActionsIcon />}
                       </TableCell>
                       <TableCell>
-                        <IconButton
-                          aria-label="expand row"
-                          size="small"
-                          onClick={() => handleOpenAfterData(row, index)}>
-                          <EditIcon />
-                        </IconButton>
-                        <Edit
-                          open={open}
-                          handleClose={handleClose}
-                          type={"uploadTable"}
-                          afterData={afterData}
-                          index={id}
-                        />
+                        <div style={{ display: "flex" }}>
+                          <IconButton
+                            aria-label="expand row"
+                            size="small"
+                            onClick={() => handleOpenAfterData(row, index)}>
+                            <EditIcon />
+                          </IconButton>
+                          <IconButton aria-label="expand row" size="small">
+                            <DeleteIcon />
+                          </IconButton>
+                          <Edit
+                            open={open}
+                            handleClose={handleClose}
+                            type={"uploadTable"}
+                            afterData={afterData}
+                            index={id}
+                          />
+                        </div>
                       </TableCell>
                     </TableRow>
                   ))}
