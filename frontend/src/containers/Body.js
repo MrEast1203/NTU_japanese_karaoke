@@ -25,6 +25,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 
 import { useList } from "../hooks/useList";
 import EditModal from "../components/EditModal";
+import DeleteModal from "../components/DeleteModal";
 
 const Wrapper = styled.section`
   display: flex;
@@ -119,15 +120,25 @@ const Body = () => {
 
   //For Model
   const [open, setOpen] = React.useState(false);
+  const [openEdit, setOpenEdit] = React.useState(false);
+  const [openDelete, setOpenDelete] = React.useState(false);
   const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const handleClose = () => {
+    setOpen(false);
+    setOpenEdit(false);
+    setOpenDelete(false);
+  };
 
   const [afterData, setAfterData] = React.useState({});
   const [id, setId] = React.useState(0);
-  const handleOpenAfterData = (data, index) => {
+  const handleOpenEdit = (data, index) => {
     setAfterData(data);
     setId(index);
-    setOpen(true);
+    setOpenEdit(true);
+  };
+  const handleOpenDelete = (index) => {
+    setId(index);
+    setOpenDelete(true);
   };
 
   const Edit = ({ open, handleClose, type, afterData, index }) => {
@@ -137,6 +148,16 @@ const Body = () => {
         onClose={handleClose}
         type={type}
         data={afterData}
+        index={index}
+      />
+    );
+  };
+  const Delete = ({ open, handleClose, type, index }) => {
+    return (
+      <DeleteModal
+        open={open}
+        onClose={handleClose}
+        type={type}
         index={index}
       />
     );
@@ -212,17 +233,26 @@ const Body = () => {
                           <IconButton
                             aria-label="expand row"
                             size="small"
-                            onClick={() => handleOpenAfterData(row, index)}>
+                            onClick={() => handleOpenEdit(row, index)}>
                             <EditIcon />
                           </IconButton>
-                          <IconButton aria-label="expand row" size="small">
+                          <IconButton
+                            aria-label="expand row"
+                            size="small"
+                            onClick={() => handleOpenDelete(index)}>
                             <DeleteIcon />
                           </IconButton>
                           <Edit
-                            open={open}
+                            open={openEdit}
                             handleClose={handleClose}
                             type={"table"}
                             afterData={afterData}
+                            index={id}
+                          />
+                          <Delete
+                            open={openDelete}
+                            handleClose={handleClose}
+                            type={"table"}
                             index={id}
                           />
                         </div>
@@ -287,17 +317,26 @@ const Body = () => {
                           <IconButton
                             aria-label="expand row"
                             size="small"
-                            onClick={() => handleOpenAfterData(row, index)}>
+                            onClick={() => handleOpenEdit(row, index)}>
                             <EditIcon />
                           </IconButton>
-                          <IconButton aria-label="expand row" size="small">
+                          <IconButton
+                            aria-label="expand row"
+                            size="small"
+                            onClick={() => handleOpenDelete(index)}>
                             <DeleteIcon />
                           </IconButton>
                           <Edit
-                            open={open}
+                            open={openEdit}
                             handleClose={handleClose}
                             type={"afterTable"}
                             afterData={afterData}
+                            index={id}
+                          />
+                          <Delete
+                            open={openDelete}
+                            handleClose={handleClose}
+                            type={"afterTable"}
                             index={id}
                           />
                         </div>
@@ -362,17 +401,26 @@ const Body = () => {
                           <IconButton
                             aria-label="expand row"
                             size="small"
-                            onClick={() => handleOpenAfterData(row, index)}>
+                            onClick={() => handleOpenEdit(row, index)}>
                             <EditIcon />
                           </IconButton>
-                          <IconButton aria-label="expand row" size="small">
+                          <IconButton
+                            aria-label="expand row"
+                            size="small"
+                            onClick={() => handleOpenDelete(index)}>
                             <DeleteIcon />
                           </IconButton>
                           <Edit
-                            open={open}
+                            open={openEdit}
                             handleClose={handleClose}
                             type={"uploadTable"}
                             afterData={afterData}
+                            index={id}
+                          />
+                          <Delete
+                            open={openDelete}
+                            handleClose={handleClose}
+                            type={"uploadTable"}
                             index={id}
                           />
                         </div>

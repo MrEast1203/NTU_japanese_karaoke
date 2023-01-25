@@ -13,6 +13,7 @@ const ListContext = createContext({
   addToTable: () => {},
   moveData: () => {},
   createData: () => {},
+  deleteData: () => {},
 });
 const ListProvider = (props) => {
   const createData = (
@@ -141,6 +142,15 @@ const ListProvider = (props) => {
     else if (to === "afterTable") setAfterTable((prev) => [...prev, data]);
     else if (to === "uploadTable") setUploadTable((prev) => [...prev, data]);
   };
+  const deleteData = (id, from) => {
+    if (from === "table") {
+      setTable(table.filter((element, index) => index !== id));
+    } else if (from === "afterTable") {
+      setAfterTable(afterTable.filter((element, index) => index !== id));
+    } else if (from === "uploadTable") {
+      setUploadTable(uploadTable.filter((element, index) => index !== id));
+    }
+  };
 
   return (
     <ListContext.Provider
@@ -154,6 +164,7 @@ const ListProvider = (props) => {
         addToTable,
         moveData,
         createData,
+        deleteData,
       }}
       {...props}
     />
