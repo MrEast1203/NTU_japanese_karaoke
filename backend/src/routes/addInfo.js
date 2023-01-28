@@ -6,6 +6,7 @@ exports.AddInfo = async (req, res) => {
   const body = req.body;
   const data = body.data;
   const type = body.type;
+  // console.log(body);
   try {
     if (type === "table") {
       const table = new Table(data);

@@ -17,8 +17,8 @@ function main(app) {
   //傳入{type: '', data: {}}
   app.delete("/api/deleteInfo", wrap(deleteInfoRoute.DeleteInfo));
   //傳入{type: '', data: {}}
-  app.delete("/api/moveInfo", wrap(deleteInfoRoute.MoveInfo));
-  //傳入{from: '', to: '', data: {}}
+  app.post("/api/moveInfo", wrap(moveInfoRoute.MoveInfo));
+  //傳入{from: '', to: '', data: {}, updatedData:{}}
 }
 
 export default main;

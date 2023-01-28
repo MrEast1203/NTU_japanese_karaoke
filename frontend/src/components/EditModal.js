@@ -15,7 +15,8 @@ const style = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 500,
+  width: "90%",
+  height: "90%",
   bgcolor: "background.paper",
   border: "2px solid #000",
   boxShadow: 24,
@@ -146,13 +147,13 @@ const EditModal = ({ open, onClose, type, data, index }) => {
 
         <div
           style={{
-            width: 600,
+            width: "100%",
             display: "flex",
             flexWrap: "nowrap",
             justifyContent: "space-around",
             marginBottom: 2,
           }}>
-          <div style={{ width: 295, marginRight: 10 }}>
+          <div style={{ width: "50%", marginRight: 10 }}>
             <Typography
               id="modal-modal-title"
               variant="h6"
@@ -171,7 +172,7 @@ const EditModal = ({ open, onClose, type, data, index }) => {
               onChange={handleSongChange}
             />
           </div>
-          <div style={{ width: 295 }}>
+          <div style={{ width: "50%" }}>
             <Typography id="modal-modal-title" variant="h6" component="h2">
               Singer?
             </Typography>

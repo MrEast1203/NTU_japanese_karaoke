@@ -1,4 +1,5 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
+import instance from "../api";
 
 const ListContext = createContext({
   //data
@@ -39,103 +40,66 @@ const ListProvider = (props) => {
       reply,
     };
   };
-  const rows = [
-    createData(
-      "kirito2301",
-      "許願",
-      "再会",
-      "V.W.P",
-      "感覺應該要一段時間後才會上QQ",
-      "",
-      "",
-      false,
-      "正在弄"
-    ),
-    createData(
-      "布衣",
-      "許願",
-      "豚乙女-ソリッド",
-      "",
-      "",
-      "https://youtu.be/_AdKinx-iTw",
-      "",
-      false,
-      "正在弄"
-    ),
-    createData(
-      "布衣",
-      "許願",
-      "Synchrogazer",
-      "水樹奈奈",
-      "希望有戰姬絕唱動畫MV",
-      "https://youtu.be/2DKCoLZAGvQ",
-      "",
-      true,
-      "Done"
-    ),
-  ];
-  const rows2 = [
-    createData(
-      "rina",
-      "投稿",
-      "fourfolium",
-      "涼風青葉(CV:高田憂希)、滝本ひふみ(CV:山口愛)、篠田はじめ(CV:戸田めぐみ)、飯島ゆん(CV:竹尾歩美)-Now Loading!!!!",
-      "",
-      "https://www.bilibili.com/video/BV1Bs411r73d/",
-      "",
-      false,
-      ""
-    ),
-    createData(
-      "洪曄",
-      "許願",
-      "如月千早",
-      "（cv:今井麻美）—約束",
-      "",
-      "https://youtu.be/4-MZ6vUQD-I",
-      "",
-      false,
-      ""
-    ),
-  ];
-  const rows3 = [
-    createData(
-      "林晏禾",
-      "許願",
-      "スタァライト九九組-You are a ghost, I am a ghost 〜劇場のゴースト〜",
-      "",
-      "",
-      "",
-      "",
-      false,
-      "半完成狀態"
-    ),
-    createData(
-      "蔡承翰",
-      "許願",
-      "Egoist-LoveStruck",
-      "",
-      "到處都唱不到QQ",
-      "",
-      "",
-      false,
-      "還在找"
-    ),
-  ];
-  const [table, setTable] = useState(rows);
-  const [afterTable, setAfterTable] = useState(rows2);
-  const [uploadTable, setUploadTable] = useState(rows3);
-
+  const [table, setTable] = useState([]);
+  const [afterTable, setAfterTable] = useState([]);
+  const [uploadTable, setUploadTable] = useState([]);
+  useEffect(() => {
+    instance.get("getTable").then(({ data }) => {
+      // console.log("table", data);
+      setTable(data.contents);
+    });
+    instance.get("getAfterTable").then(({ data }) => {
+      // console.log("aftertable", data);
+      setAfterTable(data.contents);
+    });
+    instance.get("getUploadTable").then(({ data }) => {
+      // console.log("uploadtable", data);
+      setUploadTable(data.contents);
+    });
+  }, []);
   //function
   const addToTable = (data) => {
     setTable((prev) => [...prev, data]);
+    instance.post("addInfo", { type: "table", data: data }).then(({ data }) => {
+      // console.log("added!");
+    });
   };
   const moveData = (id, from, to, data) => {
     if (from === "table") {
+      instance
+        .post("moveInfo", {
+          from: from,
+          to: to,
+          data: table[id],
+          updatedData: data,
+        })
+        .then(({ data }) => {
+          console.log("moved!");
+        });
       setTable(table.filter((element, index) => index !== id));
     } else if (from === "afterTable") {
+      instance
+        .post("moveInfo", {
+          from: from,
+          to: to,
+          data: afterTable[id],
+          updatedData: data,
+        })
+        .then(({ data }) => {
+          console.log("moved!");
+        });
       setAfterTable(afterTable.filter((element, index) => index !== id));
     } else if (from === "uploadTable") {
+      instance
+        .post("moveInfo", {
+          from: from,
+          to: to,
+          data: uploadTable[id],
+          updatedData: data,
+        })
+        .then(({ data }) => {
+          console.log("moved!");
+        });
       setUploadTable(uploadTable.filter((element, index) => index !== id));
     }
     if (to === "table") setTable((prev) => [...prev, data]);
@@ -144,10 +108,28 @@ const ListProvider = (props) => {
   };
   const deleteData = (id, from) => {
     if (from === "table") {
+      instance
+        .delete("deleteInfo", { data: { type: from, data: table[id] } })
+        .then(({ data }) => {
+          // console.log("deleted from table");
+        })
+        .catch((err) => {
+          console.log(err);
+        });
       setTable(table.filter((element, index) => index !== id));
     } else if (from === "afterTable") {
+      instance
+        .delete("deleteInfo", { data: { type: from, data: table[id] } })
+        .then(({ data }) => {
+          // console.log("deleted from aftertable");
+        });
       setAfterTable(afterTable.filter((element, index) => index !== id));
     } else if (from === "uploadTable") {
+      instance
+        .delete("deleteInfo", { data: { type: from, data: table[id] } })
+        .then(({ data }) => {
+          // console.log("deleted from uploadtable");
+        });
       setUploadTable(uploadTable.filter((element, index) => index !== id));
     }
   };
