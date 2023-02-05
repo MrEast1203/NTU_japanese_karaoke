@@ -11,12 +11,11 @@ import Stack from "@mui/material/Stack";
 import { useList } from "../hooks/useList";
 
 const style = {
-  position: "absolute",
+  position: "relative",
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: "90%",
-  height: "90%",
+  width: "80%",
   bgcolor: "background.paper",
   border: "2px solid #000",
   boxShadow: 24,
@@ -45,8 +44,11 @@ const EditModal = ({ open, onClose, type, data, index }) => {
   const [reply, setReply] = useState(
     data.reply === undefined ? "" : data.reply
   );
+  const [pwd, setPwd] = useState("");
+  const password = "admin";
   const [nameEmpty, setNameEmpty] = useState(false);
   const [songEmpty, setSongEmpty] = useState(false);
+  const [pwdWrong, setPwdWrong] = useState(false);
   const { moveData, createData } = useList();
 
   const handleNameChange = (e) => {
@@ -77,14 +79,20 @@ const EditModal = ({ open, onClose, type, data, index }) => {
     setReply(e.target.value);
   };
 
+  const handlePwd = (e) => {
+    setPwd(e.target.value);
+  };
+
   const handleAdd = (id, from, to) => {
-    if (name === "" || song === "") {
+    if (name === "" || song === "" || pwd !== password) {
       name === "" ? setNameEmpty(true) : setNameEmpty(false);
       song === "" ? setSongEmpty(true) : setSongEmpty(false);
+      pwd !== password ? setPwdWrong(true) : setPwdWrong(false);
       return;
     } else {
       setNameEmpty(false);
       setSongEmpty(false);
+      setPwdWrong(false);
     }
     const tmp = createData(
       name,
@@ -104,6 +112,8 @@ const EditModal = ({ open, onClose, type, data, index }) => {
   const handleClose = () => {
     setNameEmpty(false);
     setSongEmpty(false);
+    setPwdWrong(false);
+    setPwd("");
     onClose();
   };
 
@@ -225,22 +235,41 @@ const EditModal = ({ open, onClose, type, data, index }) => {
           sx={{ mb: 2 }}
           onChange={handleAdditionChange}
         />
-
-        <FormControl sx={{ mb: 2 }}>
-          <InputLabel variant="standard" htmlFor="uncontrolled-native">
-            Reply Type
-          </InputLabel>
-          <NativeSelect
-            defaultValue={replyType}
-            inputProps={{
-              name: "require",
-              id: "uncontrolled-native",
-            }}
-            onChange={handleReplyType}>
-            <option value={false}>進行中</option>
-            <option value={true}>已完成</option>
-          </NativeSelect>
-        </FormControl>
+        <Stack
+          direction="row"
+          spacing={0}
+          alignItems={"center"}
+          justifyContent={"space-around"}>
+          <FormControl sx={{ mb: 2 }}>
+            <InputLabel variant="standard" htmlFor="uncontrolled-native">
+              Reply Type
+            </InputLabel>
+            <NativeSelect
+              defaultValue={replyType}
+              inputProps={{
+                name: "require",
+                id: "uncontrolled-native",
+              }}
+              onChange={handleReplyType}>
+              <option value={false}>進行中</option>
+              <option value={true}>已完成</option>
+            </NativeSelect>
+          </FormControl>
+          <div>
+            <Typography id="modal-modal-title" variant="h6" component="h2">
+              密碼
+            </Typography>
+            <TextField
+              error={pwdWrong}
+              id="standard"
+              label="Password"
+              variant="standard"
+              sx={{ mb: 2 }}
+              onChange={handlePwd}
+              type="password"
+            />
+          </div>
+        </Stack>
 
         <Typography id="modal-modal-title" variant="h6" component="h2">
           回覆detail
