@@ -8,4 +8,4 @@
 4. open a new terminal
 5. run `yarn server`
 
-[link](ntujapanesekaraoke-production.up.railway.app)
+ntujapanesekaraoke-production.up.railway.app
