@@ -11,7 +11,7 @@ if (process.env.NODE_ENV === "development") {
 }
 app.use(express.json());
 routes(app);
-console.log("password", process.env.PWD);
+console.log("password", process.env.USER_PASSWORD);
 console.log("url", process.env.MONGO_URL);
 if (process.env.NODE_ENV === "production") {
   const __dirname = path.resolve();

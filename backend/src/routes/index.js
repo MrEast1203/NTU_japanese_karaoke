@@ -19,7 +19,7 @@ function main(app) {
   //傳入{type: '', data: {}}
   app.post("/api/moveInfo", wrap(moveInfoRoute.MoveInfo));
   app.get("/api/getPwd", async (req, res) => {
-    res.json({ password: process.env.PWD });
+    res.json({ password: process.env.USER_PASSWORD });
   });
   //傳入{from: '', to: '', data: {}, updatedData:{}}
 }
