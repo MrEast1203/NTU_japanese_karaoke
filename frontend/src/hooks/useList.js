@@ -6,6 +6,7 @@ const ListContext = createContext({
   table: [],
   afterTable: [],
   uploadTable: [],
+  password: "",
 
   //function
   setTable: () => {},
@@ -43,6 +44,7 @@ const ListProvider = (props) => {
   const [table, setTable] = useState([]);
   const [afterTable, setAfterTable] = useState([]);
   const [uploadTable, setUploadTable] = useState([]);
+  const [password, setPassword] = useState("");
   useEffect(() => {
     instance.get("getTable").then(({ data }) => {
       // console.log("table", data);
@@ -55,6 +57,10 @@ const ListProvider = (props) => {
     instance.get("getUploadTable").then(({ data }) => {
       // console.log("uploadtable", data);
       setUploadTable(data.contents);
+    });
+    instance.get("getPwd").then(({ data }) => {
+      console.log("data", data);
+      console.log("pwd", data.password);
     });
   }, []);
   //function
@@ -140,6 +146,7 @@ const ListProvider = (props) => {
         table,
         afterTable,
         uploadTable,
+        password,
         setTable,
         setAfterTable,
         setUploadTable,

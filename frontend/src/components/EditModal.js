@@ -45,12 +45,10 @@ const EditModal = ({ open, onClose, type, data, index }) => {
     data.reply === undefined ? "" : data.reply
   );
   const [pwd, setPwd] = useState("");
-  const password = process.env.PWD;
-  console.log("password", password);
   const [nameEmpty, setNameEmpty] = useState(false);
   const [songEmpty, setSongEmpty] = useState(false);
   const [pwdWrong, setPwdWrong] = useState(false);
-  const { moveData, createData } = useList();
+  const { moveData, createData, password } = useList();
 
   const handleNameChange = (e) => {
     setName(e.target.value);

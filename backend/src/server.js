@@ -18,6 +18,9 @@ if (process.env.NODE_ENV === "production") {
   app.get("/*", function (req, res) {
     res.sendFile(path.join(__dirname, "../frontend", "build", "index.html"));
   });
+  app.get("/api/getPwd", async (req, res) => {
+    res.json({ password: process.env.PWD });
+  });
 }
 
 const port = process.env.PORT || 4000;
