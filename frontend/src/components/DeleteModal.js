@@ -34,7 +34,7 @@ const DeleteModal = ({ open, onClose, type, index }) => {
     onClose();
   };
   const [pwd, setPwd] = useState("");
-  const password = "admin";
+  const password = process.env.PWD;
   const [pwdWrong, setPwdWrong] = useState(false);
 
   const handlePwd = (e) => {

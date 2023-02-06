@@ -45,7 +45,7 @@ const EditModal = ({ open, onClose, type, data, index }) => {
     data.reply === undefined ? "" : data.reply
   );
   const [pwd, setPwd] = useState("");
-  const password = "admin";
+  const password = process.env.PWD;
   const [nameEmpty, setNameEmpty] = useState(false);
   const [songEmpty, setSongEmpty] = useState(false);
   const [pwdWrong, setPwdWrong] = useState(false);
