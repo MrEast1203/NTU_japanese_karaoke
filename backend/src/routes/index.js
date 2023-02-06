@@ -18,6 +18,9 @@ function main(app) {
   app.delete("/api/deleteInfo", wrap(deleteInfoRoute.DeleteInfo));
   //傳入{type: '', data: {}}
   app.post("/api/moveInfo", wrap(moveInfoRoute.MoveInfo));
+  app.get("/api/getPwd", async (req, res) => {
+    res.json({ password: process.env.PWD });
+  });
   //傳入{from: '', to: '', data: {}, updatedData:{}}
 }
 
