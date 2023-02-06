@@ -59,8 +59,9 @@ const ListProvider = (props) => {
       setUploadTable(data.contents);
     });
     instance.get("getPwd").then(({ data }) => {
-      console.log("data", data);
-      console.log("pwd", data.password);
+      // console.log("data", data);
+      // console.log("pwd", data.password);
+      setPassword(data.password);
     });
   }, []);
   //function
